@@ -5,24 +5,35 @@ import com.ibm.icu.util.ULocale;
 import marytts.datatypes.MaryData;
 import marytts.datatypes.MaryDataType;
 import marytts.datatypes.MaryXML;
+import marytts.exceptions.MaryConfigurationException;
 import marytts.modules.InternalModule;
 import marytts.util.dom.MaryDomUtils;
 import marytts.util.dom.NameNodeFilter;
+import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.traversal.DocumentTraversal;
 import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.traversal.TreeWalker;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public class Preprocess extends InternalModule {
 
     static final ULocale locale = new ULocale.Builder().setLanguage("hsb").build();
     private RuleBasedNumberFormat ruleBasedNumberFormat;
 
-    public Preprocess() {
+    public Preprocess() throws MaryConfigurationException {
         super("Preprocess", MaryDataType.TOKENS, MaryDataType.WORDS, locale.toLocale());
-        ruleBasedNumberFormat = new RuleBasedNumberFormat(locale, RuleBasedNumberFormat.SPELLOUT);
+        String resourceName = "formatRules.txt";
+        try {
+            InputStream formatRulesStream = this.getClass().getResourceAsStream(resourceName);
+            String formatRules = IOUtils.toString(formatRulesStream, StandardCharsets.UTF_8);
+            ruleBasedNumberFormat = new RuleBasedNumberFormat(formatRules, locale);
+        } catch (Exception exception) {
+            throw new MaryConfigurationException(String.format("Could not load format rules from %s.%s", this.getClass().getCanonicalName(), resourceName), exception);
+        }
     }
 
     public MaryData process(MaryData d) throws Exception {

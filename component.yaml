@@ -1,1 +1,4 @@
 locale: hsb
+
+modules.classes:
+  - marytts.modules.MinimalisticPosTagger(hsb,hsb.)

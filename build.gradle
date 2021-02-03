@@ -13,3 +13,9 @@ marytts {
         config from: 'component.yaml'
     }
 }
+
+task run(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'marytts.server.Mary'
+    systemProperties << ['log4j.logger.marytts': 'DEBUG,stderr']
+}

@@ -4,6 +4,9 @@ modules.classes:
   - marytts.modules.MinimalisticPosTagger(hsb,hsb.)
   - marytts.language.hsb.UpperSorbianPhonemiser
 
+featuremanager.classes:
+  - marytts.features.FeatureProcessorManager(hsb)
+
 hsb:
   allophoneset: jar:/marytts/language/hsb/lexicon/allophones.hsb.xml
   userdict: MARY_BASE/user-dictionaries/userdict-hsb.txt

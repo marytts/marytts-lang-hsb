@@ -1,2 +1,2 @@
 rootProject.name = 'marytts-lang-hsb'
-include 'marytts-lexicon-hsb'
+includeBuild 'marytts-lexicon-hsb'

@@ -14,15 +14,15 @@ import org.w3c.dom.traversal.DocumentTraversal;
 import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.traversal.TreeWalker;
 
-import java.util.Locale;
 
 public class Preprocess extends InternalModule {
 
+    static final ULocale locale = new ULocale.Builder().setLanguage("hsb").build();
     private RuleBasedNumberFormat ruleBasedNumberFormat;
 
     public Preprocess() {
-        super("Preprocess", MaryDataType.TOKENS, MaryDataType.WORDS, Locale.forLanguageTag("hsb"));
-        ruleBasedNumberFormat = new RuleBasedNumberFormat(new ULocale("hsb"), RuleBasedNumberFormat.SPELLOUT);
+        super("Preprocess", MaryDataType.TOKENS, MaryDataType.WORDS, locale.toLocale());
+        ruleBasedNumberFormat = new RuleBasedNumberFormat(locale, RuleBasedNumberFormat.SPELLOUT);
     }
 
     public MaryData process(MaryData d) throws Exception {

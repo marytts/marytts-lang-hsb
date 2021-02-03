@@ -2,3 +2,10 @@ locale: hsb
 
 modules.classes:
   - marytts.modules.MinimalisticPosTagger(hsb,hsb.)
+  - marytts.language.hsb.UpperSorbianPhonemiser
+
+hsb:
+  allophoneset: jar:/marytts/language/hsb/lexicon/allophones.hsb.xml
+  userdict: MARY_BASE/user-dictionaries/userdict-hsb.txt
+  lexicon: jar:/marytts/language/hsb/lexicon/hsb_lexicon.fst
+  lettertosound: jar:/marytts/language/hsb/lexicon/hsb.lts

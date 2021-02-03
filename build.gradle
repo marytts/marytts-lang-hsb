@@ -14,6 +14,10 @@ marytts {
     }
 }
 
+dependencies {
+    runtimeOnly project('marytts-lexicon-hsb')
+}
+
 task run(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'marytts.server.Mary'

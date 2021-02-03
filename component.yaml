@@ -1,6 +1,7 @@
 locale: hsb
 
 modules.classes:
+  - marytts.language.hsb.Preprocess
   - marytts.modules.MinimalisticPosTagger(hsb,hsb.)
   - marytts.language.hsb.UpperSorbianPhonemiser
 

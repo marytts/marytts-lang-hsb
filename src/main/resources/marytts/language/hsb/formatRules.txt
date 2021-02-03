@@ -1,0 +1,12 @@
+%spellout-numbering:
+0: nul;
+1: jedyn;
+2: dwaj;
+3: tři;
+4: štyri;
+5: pjeć;
+6: šěsć;
+7: sydom;
+8: wosom;
+9: dźewjeć;
+10: dźesać;

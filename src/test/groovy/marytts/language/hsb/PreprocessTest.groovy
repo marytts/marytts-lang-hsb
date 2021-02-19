@@ -8,6 +8,10 @@ class PreprocessTest {
     @DataProvider
     Object[][] numbers() {
         [
+                [0, 'nul'],
+                [1, 'jedyn'],
+                [2, 'dwaj'],
+                [3, 'tři'],
                 [9, 'dźewjeć']
         ]
     }

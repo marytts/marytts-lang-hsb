@@ -57,7 +57,7 @@ public class Preprocess extends InternalModule {
         }
     }
 
-    private String getExpandedNumber(Double number) {
+    protected String getExpandedNumber(Double number) {
         return ruleBasedNumberFormat.format(number);
     }
 }

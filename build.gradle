@@ -15,6 +15,7 @@ marytts {
 }
 
 dependencies {
+    implementation group: 'org.apache.commons', name: 'commons-csv', version: '1.8'
     runtimeOnly group: 'de.serbski-institut', name: 'marytts-lexicon-hsb', version: '0.1.0-SNAPSHOT'
 }
 

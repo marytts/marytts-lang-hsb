@@ -55,7 +55,7 @@
 1: jedna;
 2: dwě;
 3: =%spellout-numbering=;
-%spellout-cardinal-animata:
+%spellout-cardinal-rationale:
 0: nul;
 1: jedyn;
 2: dwaj;
@@ -91,26 +91,26 @@
 70: [>>a]sydomdźesaty;
 80: [>>a]wosomdźesaty;
 90: [>>a]dźewjećdźesaty;
-100: stoty
-200: dwustoty
-300: třistoty
-400: štyristoty
-500: pjećstoty
-600: šěsćstoty
-700: sydomstoty
-800: wosomstoty
-900: dźewjećstoty
-1000: tysacty
-2000: dwutysacty
-3000: třitysacty
-4000: štyritysacty
-5000: pjećtysacty
-6000: šěsćtysacty
-7000: sydomtysacty
-8000: wosomtysacty
-9000: dźewjećtysacty
-10000: dźesaćtysacty
-20000: dwacećitysacty
+100: stoty;
+200: dwustoty;
+300: třistoty;
+400: štyristoty;
+500: pjećstoty;
+600: šěsćstoty;
+700: sydomstoty;
+800: wosomstoty;
+900: dźewjećstoty;
+1000: tysacty;
+2000: dwutysacty;
+3000: třitysacty;
+4000: štyritysacty;
+5000: pjećtysacty;
+6000: šěsćtysacty;
+7000: sydomtysacty;
+8000: wosomtysacty;
+9000: dźewjećtysacty;
+10000: dźesaćtysacty;
+20000: dwacećitysacty;
 %spellout-ordinal-femininum:
 0: nul;
 1: prěnja;
@@ -140,7 +140,7 @@
 70: [>>a]sydomdźesata;
 80: [>>a]wosomdźesata;
 90: [>>a]dźewjećdźesata;
-100: stota
+100: stota;
 %spellout-ordinal-neutrum:
 0: nul;
 1: prěnje;
@@ -170,7 +170,7 @@
 70: [>>a]sydomdźesate;
 80: [>>a]wosomdźesate;
 90: [>>a]dźewjećdźesate;
-100: stote
+100: stote;
 %spellout-numbering-year:
 0: =%spellout-numbering=;
 1100/500: <%spellout-numbering< stow [>>];

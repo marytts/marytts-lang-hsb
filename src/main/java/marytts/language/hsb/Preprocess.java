@@ -26,6 +26,10 @@ public class Preprocess extends InternalModule {
 
     public Preprocess() throws MaryConfigurationException {
         super("Preprocess", MaryDataType.TOKENS, MaryDataType.WORDS, locale.toLocale());
+        initNumberExpansion();
+    }
+
+    private void initNumberExpansion() throws MaryConfigurationException {
         String resourceName = "formatRules.txt";
         try {
             InputStream formatRulesStream = this.getClass().getResourceAsStream(resourceName);
@@ -57,7 +61,8 @@ public class Preprocess extends InternalModule {
         }
     }
 
-    private String getExpandedNumber(Double number) {
+    protected String getExpandedNumber(Double number) {
         return ruleBasedNumberFormat.format(number);
     }
+
 }

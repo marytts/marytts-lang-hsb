@@ -12,12 +12,12 @@ class PreprocessTest {
         def reader = stream.newReader('UTF-8')
         def csvParser = CSVFormat.DEFAULT.parse(reader)
         return csvParser.collect { record ->
-            [Long.parseLong(record.get(0)), record.get(1)]
+            [new BigDecimal(record.get(0)), record.get(1)]
         }
     }
 
     @Test(dataProvider = 'numbers')
-    void testGetExpandedNumber(Long input, String expected) {
+    void testGetExpandedNumber(BigDecimal input, String expected) {
         def preprocess = new Preprocess()
         def actual = preprocess.getExpandedNumber(input)
         assert expected == actual

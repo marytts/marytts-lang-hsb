@@ -1,4 +1,5 @@
 %spellout-numbering:
+x.x: << koma >>;
 0: nula;
 1: jedyn;
 2: dwaj;

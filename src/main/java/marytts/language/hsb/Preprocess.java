@@ -1,5 +1,6 @@
 package marytts.language.hsb;
 
+import com.ibm.icu.text.NumberFormat;
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import com.ibm.icu.util.ULocale;
 import marytts.datatypes.MaryData;
@@ -18,11 +19,13 @@ import org.w3c.dom.traversal.TreeWalker;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 
 public class Preprocess extends InternalModule {
 
     static final ULocale locale = new ULocale.Builder().setLanguage("hsb").build();
     private RuleBasedNumberFormat ruleBasedNumberFormat;
+    private NumberFormat numberFormat;
 
     public Preprocess() throws MaryConfigurationException {
         super("Preprocess", MaryDataType.TOKENS, MaryDataType.WORDS, locale.toLocale());
@@ -35,12 +38,13 @@ public class Preprocess extends InternalModule {
             InputStream formatRulesStream = this.getClass().getResourceAsStream(resourceName);
             String formatRules = IOUtils.toString(formatRulesStream, StandardCharsets.UTF_8);
             ruleBasedNumberFormat = new RuleBasedNumberFormat(formatRules, locale);
+            numberFormat = NumberFormat.getNumberInstance(locale);
         } catch (Exception exception) {
             throw new MaryConfigurationException(String.format("Could not load format rules from %s.%s", this.getClass().getCanonicalName(), resourceName), exception);
         }
     }
 
-    public MaryData process(MaryData d) throws Exception {
+    public MaryData process(MaryData d) {
         Document doc = d.getDocument();
         expandAllNumbers(doc);
         MaryData result = new MaryData(getOutputType(), d.getLocale());
@@ -54,14 +58,23 @@ public class Preprocess extends InternalModule {
         Element token;
         while ((token = (Element) treeWalker.nextNode()) != null) {
             String tokenText = MaryDomUtils.tokenText(token);
-            if (tokenText.matches("\\d+")) {
-                Double number = Double.parseDouble(tokenText);
-                MaryDomUtils.setTokenText(token, getExpandedNumber(number));
+            Number number = parseNumber(tokenText);
+            if (number != null) {
+                String spelledOutNumber = spelloutNumber(number);
+                MaryDomUtils.setTokenText(token, spelledOutNumber);
             }
         }
     }
 
-    protected String getExpandedNumber(Double number) {
+    protected Number parseNumber(String token) {
+        try {
+            return numberFormat.parse(token);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    protected String spelloutNumber(Number number) {
         return ruleBasedNumberFormat.format(number);
     }
 

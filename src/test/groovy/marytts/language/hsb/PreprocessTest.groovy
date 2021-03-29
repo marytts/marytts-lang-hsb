@@ -40,8 +40,8 @@ class PreprocessTest {
     }
 
     @Test(dataProvider = 'numbers')
-    void testGetExpandedNumber(BigDecimal input, String expected) {
-        def actual = preprocess.getExpandedNumber(input)
+    void testSpelloutNumber(BigDecimal input, String expected) {
+        def actual = preprocess.spelloutNumber(input)
         assert expected == actual
     }
 }

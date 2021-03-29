@@ -44,7 +44,7 @@ public class Preprocess extends InternalModule {
         }
     }
 
-    public MaryData process(MaryData d) throws Exception {
+    public MaryData process(MaryData d) {
         Document doc = d.getDocument();
         expandAllNumbers(doc);
         MaryData result = new MaryData(getOutputType(), d.getLocale());
@@ -58,9 +58,10 @@ public class Preprocess extends InternalModule {
         Element token;
         while ((token = (Element) treeWalker.nextNode()) != null) {
             String tokenText = MaryDomUtils.tokenText(token);
-            if (tokenText.matches("\\d+")) {
-                Double number = Double.parseDouble(tokenText);
-                MaryDomUtils.setTokenText(token, getExpandedNumber(number));
+            Number number = parseNumber(tokenText);
+            if (number != null) {
+                String spelledOutNumber = spelloutNumber(number);
+                MaryDomUtils.setTokenText(token, spelledOutNumber);
             }
         }
     }
@@ -73,7 +74,7 @@ public class Preprocess extends InternalModule {
         }
     }
 
-    protected String getExpandedNumber(Double number) {
+    protected String spelloutNumber(Number number) {
         return ruleBasedNumberFormat.format(number);
     }
 

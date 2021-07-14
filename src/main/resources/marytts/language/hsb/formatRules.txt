@@ -174,5 +174,5 @@ x.x: << koma >>;
 100: stote;
 %spellout-numbering-year:
 0: =%spellout-numbering=;
-1100/500: <%spellout-numbering< stow [>>];
+1100/100: <%spellout-numbering< stow [>>];
 10000: =%spellout-numbering=;

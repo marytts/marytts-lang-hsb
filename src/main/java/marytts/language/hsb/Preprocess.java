@@ -1,5 +1,6 @@
 package marytts.language.hsb;
 
+import com.google.common.base.Charsets;
 import com.ibm.icu.text.NumberFormat;
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import com.ibm.icu.util.ULocale;
@@ -10,6 +11,9 @@ import marytts.exceptions.MaryConfigurationException;
 import marytts.modules.InternalModule;
 import marytts.util.dom.MaryDomUtils;
 import marytts.util.dom.NameNodeFilter;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,25 +22,42 @@ import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.traversal.TreeWalker;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Preprocess extends InternalModule {
 
     static final ULocale locale = new ULocale.Builder().setLanguage("hsb").build();
-    private Map<Object, Object> symbols = Collections.emptyMap();
+    private Map<String, String> symbols;
     private RuleBasedNumberFormat ruleBasedNumberFormat;
     private NumberFormat numberFormat;
 
     public Preprocess() throws MaryConfigurationException {
         super("Preprocess", MaryDataType.TOKENS, MaryDataType.WORDS, locale.toLocale());
         initNumberExpansion("formatRules.txt");
+        initSymbolExpansion("symbols.csv");
     }
 
     private void initSymbolExpansion(String resourceName) throws MaryConfigurationException {
-        throw new MaryConfigurationException(String.format("Could not load symbols from %s.%s", this.getClass().getCanonicalName(), resourceName));
+        try {
+            symbols = new HashMap<>();
+            InputStream symbolsStream = this.getClass().getResourceAsStream(resourceName);
+            InputStreamReader symbolsReader = new InputStreamReader(symbolsStream, Charsets.UTF_8);
+            CSVParser csv = CSVFormat.Builder.create(CSVFormat.DEFAULT)
+                    .setHeader("symbol", "expansion")
+                    .build()
+                    .parse(symbolsReader);
+            for (CSVRecord record : csv) {
+                String symbol = record.get("symbol");
+                String expansion = record.get("expansion");
+                symbols.put(symbol, expansion);
+            }
+        } catch (Exception exception) {
+            throw new MaryConfigurationException(String.format("Could not load symbols from %s.%s", this.getClass().getCanonicalName(), resourceName), exception);
+        }
     }
 
     private void initNumberExpansion(String resourceName) throws MaryConfigurationException {
@@ -59,7 +80,11 @@ public class Preprocess extends InternalModule {
     }
 
     protected String expandSymbol(String symbol) {
-        return null;
+        if (symbols.containsKey(symbol))
+            return symbols.get(symbol);
+        else
+            logger.warn("Could not expand unknown symbol:" + symbol);
+        return symbol;
     }
 
     private void expandAllNumbers(Document document) {

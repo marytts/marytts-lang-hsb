@@ -4,6 +4,7 @@ import com.ibm.icu.text.NumberFormat
 import com.ibm.icu.text.RuleBasedNumberFormat
 import marytts.exceptions.MaryConfigurationException
 import org.apache.commons.csv.CSVFormat
+import org.testng.IExpectedExceptionsHolder
 import org.testng.annotations.BeforeClass
 import org.testng.annotations.DataProvider
 import org.testng.annotations.Test
@@ -31,6 +32,13 @@ class PreprocessTest {
     void testExpandSymbol() {
         def expected = 'procentow'
         def actual = preprocess.expandSymbol('%');
+        assert expected == actual
+    }
+
+    @Test
+    void testExpandUnknownSymbol() {
+        def expected = 'fnord'
+        def actual = preprocess.expandSymbol(expected)
         assert expected == actual
     }
 

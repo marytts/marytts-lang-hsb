@@ -28,10 +28,19 @@ class PreprocessTest {
         preprocess.initSymbolExpansion('noSuchResource')
     }
 
-    @Test
-    void testExpandSymbol() {
-        def expected = 'procentow'
-        def actual = preprocess.expandSymbol('%');
+    @DataProvider
+    Object[][] symbols() {
+        def stream = this.getClass().getResourceAsStream('symbols.csv')
+        def reader = stream.newReader('UTF-8')
+        def csvParser = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader)
+        return csvParser.collect { record ->
+            [record.get('symbol'), record.get('expansion')]
+        }
+    }
+
+    @Test(dataProvider = 'symbols')
+    void testExpandSymbol(String input, String expected) {
+        def actual = preprocess.expandSymbol(input);
         assert expected == actual
     }
 

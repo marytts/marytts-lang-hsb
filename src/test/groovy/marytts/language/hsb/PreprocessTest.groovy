@@ -1,5 +1,7 @@
 package marytts.language.hsb
 
+import com.ibm.icu.text.NumberFormat
+import com.ibm.icu.text.RuleBasedNumberFormat
 import marytts.exceptions.MaryConfigurationException
 import org.apache.commons.csv.CSVFormat
 import org.testng.annotations.BeforeClass
@@ -13,6 +15,16 @@ class PreprocessTest {
     @BeforeClass
     void setUp() {
         preprocess = new Preprocess()
+    }
+
+    @Test
+    void testInitSymbolExpansion() {
+        assert preprocess.symbols instanceof Map
+    }
+
+    @Test(expectedExceptions = MaryConfigurationException)
+    void testInitSymbolExpansionWithInvalidResource() {
+        preprocess.initSymbolExpansion('noSuchResource')
     }
 
     @DataProvider

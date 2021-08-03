@@ -20,16 +20,23 @@ import org.w3c.dom.traversal.TreeWalker;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.Collections;
+import java.util.Map;
 
 public class Preprocess extends InternalModule {
 
     static final ULocale locale = new ULocale.Builder().setLanguage("hsb").build();
+    private Map<Object, Object> symbols = Collections.emptyMap();
     private RuleBasedNumberFormat ruleBasedNumberFormat;
     private NumberFormat numberFormat;
 
     public Preprocess() throws MaryConfigurationException {
         super("Preprocess", MaryDataType.TOKENS, MaryDataType.WORDS, locale.toLocale());
         initNumberExpansion("formatRules.txt");
+    }
+
+    private void initSymbolExpansion(String resourceName) throws MaryConfigurationException {
+        throw new MaryConfigurationException(String.format("Could not load symbols from %s.%s", this.getClass().getCanonicalName(), resourceName));
     }
 
     private void initNumberExpansion(String resourceName) throws MaryConfigurationException {

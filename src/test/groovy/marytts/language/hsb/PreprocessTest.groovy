@@ -27,6 +27,13 @@ class PreprocessTest {
         preprocess.initSymbolExpansion('noSuchResource')
     }
 
+    @Test
+    void testExpandSymbol() {
+        def expected = 'procentow'
+        def actual = preprocess.expandSymbol('%');
+        assert expected == actual
+    }
+
     @DataProvider
     Object[][] numberTokens() {
         [

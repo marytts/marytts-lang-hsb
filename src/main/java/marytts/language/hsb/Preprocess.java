@@ -58,6 +58,10 @@ public class Preprocess extends InternalModule {
         return result;
     }
 
+    protected String expandSymbol(String symbol) {
+        return null;
+    }
+
     private void expandAllNumbers(Document document) {
         TreeWalker treeWalker = ((DocumentTraversal) document).createTreeWalker(document, NodeFilter.SHOW_ELEMENT,
                 new NameNodeFilter(MaryXML.TOKEN), false);

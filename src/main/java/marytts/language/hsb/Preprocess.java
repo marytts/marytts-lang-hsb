@@ -73,10 +73,24 @@ public class Preprocess extends InternalModule {
 
     public MaryData process(MaryData d) {
         Document doc = d.getDocument();
+        expandAllSymbols(doc);
         expandAllNumbers(doc);
         MaryData result = new MaryData(getOutputType(), d.getLocale());
         result.setDocument(doc);
         return result;
+    }
+
+    private void expandAllSymbols(Document document) {
+        TreeWalker treeWalker = ((DocumentTraversal) document).createTreeWalker(document, NodeFilter.SHOW_ELEMENT,
+                new NameNodeFilter(MaryXML.TOKEN), false);
+        Element token;
+        while ((token = (Element) treeWalker.nextNode()) != null) {
+            String tokenText = MaryDomUtils.tokenText(token);
+            String expandedSymbol = expandSymbol(tokenText);
+            if (expandedSymbol != tokenText) {
+                MaryDomUtils.setTokenText(token, expandedSymbol);
+            }
+        }
     }
 
     protected String expandSymbol(String symbol) {

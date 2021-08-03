@@ -29,11 +29,10 @@ public class Preprocess extends InternalModule {
 
     public Preprocess() throws MaryConfigurationException {
         super("Preprocess", MaryDataType.TOKENS, MaryDataType.WORDS, locale.toLocale());
-        initNumberExpansion();
+        initNumberExpansion("formatRules.txt");
     }
 
-    private void initNumberExpansion() throws MaryConfigurationException {
-        String resourceName = "formatRules.txt";
+    private void initNumberExpansion(String resourceName) throws MaryConfigurationException {
         try {
             InputStream formatRulesStream = this.getClass().getResourceAsStream(resourceName);
             String formatRules = IOUtils.toString(formatRulesStream, StandardCharsets.UTF_8);

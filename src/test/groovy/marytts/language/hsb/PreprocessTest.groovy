@@ -1,5 +1,6 @@
 package marytts.language.hsb
 
+import marytts.exceptions.MaryConfigurationException
 import org.apache.commons.csv.CSVFormat
 import org.testng.annotations.BeforeClass
 import org.testng.annotations.DataProvider
@@ -21,6 +22,17 @@ class PreprocessTest {
                 ['3,14159', 3.14159],
                 ['Fnord', null]
         ]
+    }
+
+    @Test
+    void testInitNumberExpansion() {
+        assert preprocess.ruleBasedNumberFormat instanceof RuleBasedNumberFormat
+        assert preprocess.numberFormat instanceof NumberFormat
+    }
+
+    @Test(expectedExceptions = MaryConfigurationException)
+    void testInitNumberExpansionWithInvalidResource() {
+        preprocess.initNumberExpansion('noSuchResource')
     }
 
     @Test(dataProvider = 'numberTokens')

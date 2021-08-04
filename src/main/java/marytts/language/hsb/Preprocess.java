@@ -1,5 +1,6 @@
 package marytts.language.hsb;
 
+import com.google.common.base.Charsets;
 import com.ibm.icu.text.NumberFormat;
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import com.ibm.icu.util.ULocale;
@@ -10,6 +11,9 @@ import marytts.exceptions.MaryConfigurationException;
 import marytts.modules.InternalModule;
 import marytts.util.dom.MaryDomUtils;
 import marytts.util.dom.NameNodeFilter;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,22 +22,45 @@ import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.traversal.TreeWalker;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Preprocess extends InternalModule {
 
     static final ULocale locale = new ULocale.Builder().setLanguage("hsb").build();
+    private Map<String, String> symbols;
     private RuleBasedNumberFormat ruleBasedNumberFormat;
     private NumberFormat numberFormat;
 
     public Preprocess() throws MaryConfigurationException {
         super("Preprocess", MaryDataType.TOKENS, MaryDataType.WORDS, locale.toLocale());
-        initNumberExpansion();
+        initNumberExpansion("formatRules.txt");
+        initSymbolExpansion("symbols.csv");
     }
 
-    private void initNumberExpansion() throws MaryConfigurationException {
-        String resourceName = "formatRules.txt";
+    private void initSymbolExpansion(String resourceName) throws MaryConfigurationException {
+        try {
+            symbols = new HashMap<>();
+            InputStream symbolsStream = this.getClass().getResourceAsStream(resourceName);
+            InputStreamReader symbolsReader = new InputStreamReader(symbolsStream, Charsets.UTF_8);
+            CSVParser csv = CSVFormat.Builder.create(CSVFormat.DEFAULT)
+                    .setHeader("symbol", "expansion")
+                    .build()
+                    .parse(symbolsReader);
+            for (CSVRecord record : csv) {
+                String symbol = record.get("symbol");
+                String expansion = record.get("expansion");
+                symbols.put(symbol, expansion);
+            }
+        } catch (Exception exception) {
+            throw new MaryConfigurationException(String.format("Could not load symbols from %s.%s", this.getClass().getCanonicalName(), resourceName), exception);
+        }
+    }
+
+    private void initNumberExpansion(String resourceName) throws MaryConfigurationException {
         try {
             InputStream formatRulesStream = this.getClass().getResourceAsStream(resourceName);
             String formatRules = IOUtils.toString(formatRulesStream, StandardCharsets.UTF_8);
@@ -46,10 +73,31 @@ public class Preprocess extends InternalModule {
 
     public MaryData process(MaryData d) {
         Document doc = d.getDocument();
+        expandAllSymbols(doc);
         expandAllNumbers(doc);
         MaryData result = new MaryData(getOutputType(), d.getLocale());
         result.setDocument(doc);
         return result;
+    }
+
+    private void expandAllSymbols(Document document) {
+        TreeWalker treeWalker = ((DocumentTraversal) document).createTreeWalker(document, NodeFilter.SHOW_ELEMENT,
+                new NameNodeFilter(MaryXML.TOKEN), false);
+        Element token;
+        while ((token = (Element) treeWalker.nextNode()) != null) {
+            String tokenText = MaryDomUtils.tokenText(token);
+            String expandedSymbol = expandSymbol(tokenText);
+            if (expandedSymbol != tokenText) {
+                MaryDomUtils.setTokenText(token, expandedSymbol);
+            }
+        }
+    }
+
+    protected String expandSymbol(String symbol) {
+        if (symbols.containsKey(symbol))
+            return symbols.get(symbol);
+        else
+            return symbol;
     }
 
     private void expandAllNumbers(Document document) {

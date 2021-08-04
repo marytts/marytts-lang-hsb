@@ -97,8 +97,7 @@ public class Preprocess extends InternalModule {
         if (symbols.containsKey(symbol))
             return symbols.get(symbol);
         else
-            logger.warn("Could not expand unknown symbol:" + symbol);
-        return symbol;
+            return symbol;
     }
 
     private void expandAllNumbers(Document document) {

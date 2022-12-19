@@ -2,7 +2,7 @@ plugins {
     id 'de.dfki.mary.component' version '0.3.0'
 }
 
-group 'de.serbski-institut'
+group 'de.dfki.mary'
 version '0.1.0-SNAPSHOT'
 
 marytts {

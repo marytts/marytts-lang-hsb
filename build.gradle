@@ -27,6 +27,11 @@ dependencies {
     runtimeOnly group: 'de.dfki.mary', name: 'marytts-lexicon-hsb', version: '0.1.0'
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 tasks.register('run', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass.set 'marytts.server.Mary'

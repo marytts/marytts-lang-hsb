@@ -16,7 +16,7 @@ marytts {
 
 dependencies {
     implementation group: 'org.apache.commons', name: 'commons-csv', version: '1.9.0'
-    runtimeOnly group: 'de.serbski-institut', name: 'marytts-lexicon-hsb', version: '0.1.0-SNAPSHOT'
+    runtimeOnly group: 'de.dfki.mary', name: 'marytts-lexicon-hsb', version: '0.1.0'
 }
 
 tasks.register('run', JavaExec) {

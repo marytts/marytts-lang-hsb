@@ -1,8 +1,0 @@
-plugins {
-    id "de.dfki.mary.lexicon-compiler" version "0.1.1"
-}
-
-group 'de.serbski-institut'
-version '0.1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8

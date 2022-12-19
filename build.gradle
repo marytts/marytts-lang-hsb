@@ -5,7 +5,10 @@ plugins {
 
 group 'de.dfki.mary'
 version '0.1.0-SNAPSHOT'
+description 'Upper Sorbian language component for MaryTTS'
+
 ext {
+    url = 'https://github.com/marytts/marytts-lang-hsb'
     isReleaseVersion = !version.endsWith("SNAPSHOT")
 }
 
@@ -33,6 +36,32 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+            pom {
+                name = project.name
+                description = project.description
+                url = project.url
+                licenses {
+                    license {
+                        name = 'GNU Lesser General Public License v3.0 only'
+                        url = 'https://spdx.org/licenses/LGPL-3.0-only.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'psibre'
+                        name = 'Ingmar Steiner'
+                    }
+                    developer {
+                        id = 'aStereoID'
+                        name = 'Astrid Schmiedel'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/marytts/marytts-lang-hsb.git'
+                    developerConnection = 'scm:git:ssh://git@github.com:marytts/marytts-lang-hsb.git'
+                    url = project.url
+                }
+            }
         }
     }
     repositories {

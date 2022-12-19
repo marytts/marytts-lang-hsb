@@ -19,8 +19,8 @@ dependencies {
     runtimeOnly group: 'de.serbski-institut', name: 'marytts-lexicon-hsb', version: '0.1.0-SNAPSHOT'
 }
 
-task run(type: JavaExec) {
+tasks.register('run', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'marytts.server.Mary'
+    mainClass.set 'marytts.server.Mary'
     systemProperties << ['log4j.logger.marytts': 'DEBUG,stderr']
 }

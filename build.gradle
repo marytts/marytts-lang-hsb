@@ -1,9 +1,13 @@
 plugins {
     id 'de.dfki.mary.component' version '0.3.0'
+    id 'maven-publish'
 }
 
 group 'de.dfki.mary'
 version '0.1.0-SNAPSHOT'
+ext {
+    isReleaseVersion = !version.endsWith("SNAPSHOT")
+}
 
 marytts {
     component {
@@ -23,4 +27,20 @@ tasks.register('run', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass.set 'marytts.server.Mary'
     systemProperties << ['log4j.logger.marytts': 'DEBUG,stderr']
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name 'OSSRH'
+            url isReleaseVersion ? 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                    : 'https://oss.sonatype.org/content/repositories/snapshots'
+            credentials(PasswordCredentials)
+        }
+    }
 }

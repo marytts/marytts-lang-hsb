@@ -78,12 +78,9 @@ $,dolarow
 +,plus
 –,ležaca smužka
 /,sleš
-:,dwojodypk
-;,semikolon
 <,mjeńše hač
 =,runa so
 >,wjetše hač
-?,prašak
 @,et
 [,wotewrjena róžkata spinka
 \,beksleš
@@ -96,3 +93,6 @@ _,podsmužka
 },zawrjena wuzhibowana spinka
 ~,tilda
 °,stopnjow
+"°C",stopnjow Celsius
+"°K",stopnjow Kelvin
+"°F",stopnjow Fahrenheit

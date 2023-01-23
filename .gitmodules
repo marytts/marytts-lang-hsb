@@ -1,0 +1,3 @@
+[submodule "marytts-lexicon-hsb"]
+	path = marytts-lexicon-hsb
+	url = https://github.com/marytts/marytts-lexicon-hsb.git

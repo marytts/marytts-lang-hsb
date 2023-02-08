@@ -1,4 +1,5 @@
 %spellout-numbering:
+-x: minus >>;
 x.x: << koma >>;
 0: nula;
 1: jedyn;
@@ -172,7 +173,13 @@ x.x: << koma >>;
 80: [>>a]wosomdźesate;
 90: [>>a]dźewjećdźesate;
 100: stote;
-%spellout-numbering-year:
-0: =%spellout-numbering=;
-1100/100: <%spellout-numbering< stow [>>];
-10000: =%spellout-numbering=;
+%alt-teens:
+=%spellout-numbering=;
+1000>: <%%alt-hundreds<[ >>];
+2000: =%spellout-numbering=;
+%%alt-hundreds:
+0: SHOULD NEVER GET HERE!;
+10: <%spellout-numbering< tysac;
+11: =%spellout-numbering= stow>%%empty>;
+%%empty:
+0:;

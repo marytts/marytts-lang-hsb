@@ -65,34 +65,30 @@ symbol,expansion
 ↓,dele
 →,naprawo
 ←,nalěwo
-„,pazorki deleka
 #,kósnik
 €,eurow
 $,dolarow
 £,funtow
 %,procentow
 &,a
-(,wotewrjena spinka
-),zawrjena spinka
 *,hwěžka
 +,plus
-–,ležaca smužka
-/,sleš
-:,dwojodypk
-;,semikolon
 <,mjeńše hač
 =,runa so
 >,wjetše hač
-?,prašak
 @,et
 [,wotewrjena róžkata spinka
 \,beksleš
 ],zawrjena  róžkata spinka
 ^,wyše
-_,podsmužka
-`,grawis
 {,wotewrjena wuzhibowana spinka
 |,padoruna smuha
 },zawrjena wuzhibowana spinka
 ~,tilda
 °,stopnjow
+"°C",stopnjow Celsius
+"°K",stopnjow Kelvin
+"°F",stopnjow Fahrenheit
+"° C",stopnjow Celsius
+"° K",stopnjow Kelvin
+"° F",stopnjow Fahrenheit

@@ -4,6 +4,11 @@ Upper Sorbian language component for MaryTTS
 [Unreleased]
 ------------
 
+### Changed
+
+- Upgraded component plugin to v0.3.1
+- Upgraded lexicon to v0.1.1
+
 [v0.1.0] - 2022-12-19
 ---------------------
 

@@ -9,7 +9,9 @@ Upper Sorbian language component for MaryTTS
 
 ### Changed
 
-- Upgraded component plugin to v0.3.1
+- Build with Gradle v7.6.4
+- Upgraded GitHub actions
+- Upgraded component plugin to v0.3.2
 - Upgraded lexicon to v0.1.1
 - Tweaked rules, symbols in preprocessing
 

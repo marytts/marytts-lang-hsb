@@ -46,4 +46,18 @@ class PreprocessIT {
         }
         assert actual == expected
     }
+
+    @Test
+    void 'Given input with abbreviations, When text is converted to words, Then abbreviations are expanded correctly'() {
+        def input = 'GHz l/km mpg cm³.'
+        def expected = 'gigahertzow litrow na kilometer milow na galonu kubiknych centimetrow.'
+        def output = mary.generateXML(input)
+        def outputStr = output.documentElement.serialize()
+        def xmlSlurper = new XmlSlurper(false, false)
+        def tokens = xmlSlurper.parseText(outputStr).depthFirst().findAll { it.name() == 't' }
+        def actual = tokens.inject('') { result, token ->
+            (result.isEmpty() || token ==~ /\p{Punct}/) ? result + token : result + ' ' + token
+        }
+        assert actual == expected
+    }
 }

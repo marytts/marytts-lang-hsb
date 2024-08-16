@@ -31,6 +31,7 @@ import java.util.Map;
 public class Preprocess extends InternalModule {
 
     static final ULocale locale = new ULocale.Builder().setLanguage("hsb").build();
+    private Map<String, String> abbreviations;
     private Map<String, String> symbols;
     private RuleBasedNumberFormat ruleBasedNumberFormat;
     private NumberFormat numberFormat;
@@ -39,6 +40,26 @@ public class Preprocess extends InternalModule {
         super("Preprocess", MaryDataType.TOKENS, MaryDataType.WORDS, locale.toLocale());
         initNumberExpansion("formatRules.txt");
         initSymbolExpansion("symbols.csv");
+        initAbbreviationExpansion("abbreviations.csv");
+    }
+
+    private void initAbbreviationExpansion(String resourceName) throws MaryConfigurationException {
+        try {
+            abbreviations = new HashMap<>();
+            InputStream abbreviationsStream = this.getClass().getResourceAsStream(resourceName);
+            InputStreamReader abbreviationsReader = new InputStreamReader(abbreviationsStream, Charsets.UTF_8);
+            CSVParser csv = CSVFormat.Builder.create(CSVFormat.DEFAULT)
+                    .setHeader("abbreviation", "expansion")
+                    .build()
+                    .parse(abbreviationsReader);
+            for (CSVRecord record : csv) {
+                String abbreviation = record.get("abbreviation");
+                String expansion = record.get("expansion");
+                abbreviations.put(abbreviation, expansion);
+            }
+        } catch (Exception exception) {
+            throw new MaryConfigurationException(String.format("Could not load abbreviations from %s.%s", this.getClass().getCanonicalName(), resourceName), exception);
+        }
     }
 
     private void initSymbolExpansion(String resourceName) throws MaryConfigurationException {
@@ -73,11 +94,32 @@ public class Preprocess extends InternalModule {
 
     public MaryData process(MaryData d) {
         Document doc = d.getDocument();
+        expandAllAbbreviations(doc);
         expandAllSymbols(doc);
         expandAllNumbers(doc);
         MaryData result = new MaryData(getOutputType(), d.getLocale());
         result.setDocument(doc);
         return result;
+    }
+
+    private void expandAllAbbreviations(Document document) {
+        TreeWalker treeWalker = ((DocumentTraversal) document).createTreeWalker(document, NodeFilter.SHOW_ELEMENT,
+                new NameNodeFilter(MaryXML.TOKEN), false);
+        Element token;
+        while ((token = (Element) treeWalker.nextNode()) != null) {
+            String tokenText = MaryDomUtils.tokenText(token);
+            String expandedAbbreviation = expandAbbreviation(tokenText);
+            if (expandedAbbreviation != tokenText) {
+                MaryDomUtils.setTokenText(token, expandedAbbreviation);
+            }
+        }
+    }
+
+    protected String expandAbbreviation(String abbreviation) {
+        if (abbreviations.containsKey(abbreviation))
+            return abbreviations.get(abbreviation);
+        else
+            return abbreviation;
     }
 
     private void expandAllSymbols(Document document) {

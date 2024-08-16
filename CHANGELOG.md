@@ -4,6 +4,10 @@ Upper Sorbian language component for MaryTTS
 [Unreleased]
 ------------
 
+### Added
+
+- Abbreviation expansion in preprocessing
+
 [v0.2.0] - 2024-05-12
 ---------------------
 

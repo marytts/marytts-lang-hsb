@@ -8,6 +8,10 @@ Upper Sorbian language component for MaryTTS
 
 - Abbreviation expansion in preprocessing
 
+### Fixed
+
+- Number expansion for years 1100-1999
+
 [v0.2.0] - 2024-05-12
 ---------------------
 
